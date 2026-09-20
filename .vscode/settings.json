@@ -1,0 +1,10 @@
+{
+  "java.jdt.ls.java.home": "/nix/store/p3ckxs1gmqir4m2b6yknbbka33da1y4m-openjdk-21.0.12.1+1/lib/openjdk",
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-21",
+      "path": "/nix/store/p3ckxs1gmqir4m2b6yknbbka33da1y4m-openjdk-21.0.12.1+1/lib/openjdk",
+      "default": true
+    }
+  ]
+}
