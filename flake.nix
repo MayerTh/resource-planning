@@ -12,24 +12,24 @@
         pkgs = nixpkgs.legacyPackages.${system};
       in
       {
-        packages.default = pkgs.stdenv.mkDerivation {
+        packages.default = pkgs.maven.buildMavenPackage {
           pname = "resource-planning";
           version = "0.1.0";
           src = ./.;
-          nativeBuildInputs = [ pkgs.jdk ];
 
-          buildPhase = ''
-            javac -d out src/Main.java
-          '';
+          mvnHash = "sha256-DOfxXfLoT3etsmwrJMxyNnWvUiJ7dXCOnIX64oFNqL4=";
+          buildOffline = true;
 
           installPhase = ''
+            runHook preInstall
             mkdir -p $out/share/resource-planning $out/bin
-            cp -r out/* $out/share/resource-planning/
+            install -Dm444 target/resource-planning.jar $out/share/resource-planning/resource-planning.jar
             cat > $out/bin/resource-planning <<EOF
             #!/usr/bin/env bash
-            exec ${pkgs.jdk}/bin/java -cp $out/share/resource-planning Main
+            exec ${pkgs.jdk}/bin/java -jar $out/share/resource-planning/resource-planning.jar
             EOF
             chmod +x $out/bin/resource-planning
+            runHook postInstall
           '';
         };
 
@@ -39,7 +39,7 @@
         };
 
         devShells.default = pkgs.mkShell {
-          packages = [ pkgs.jdk ];
+          packages = [ pkgs.jdk pkgs.maven ];
         };
       });
 }
