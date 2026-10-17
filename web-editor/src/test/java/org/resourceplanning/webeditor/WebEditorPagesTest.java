@@ -43,4 +43,11 @@ class WebEditorPagesTest {
             .then().statusCode(200)
             .body(containsString("2026-01"), containsString("anna.mayer"));
     }
+
+    @Test
+    void reportsPageRendersMemberAndProjectTables() {
+        given().when().get("/reports")
+            .then().statusCode(200)
+            .body(containsString("anna.mayer"), containsString("internal-tools-revamp"));
+    }
 }

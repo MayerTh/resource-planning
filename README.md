@@ -65,12 +65,13 @@ RESOURCEPLANNING_DATA_DIR=/path/to/data java -jar cli/target/cli.jar
 The report covers, per team member and month: assigned %, spare capacity,
 over-allocation; and per project and month: covered/uncovered skills needed.
 
-## Web editor: editing the data
+## Web editor: editing the data and viewing reports
 
 The web editor is a [Quarkus](https://quarkus.io) app for editing
 `team_members.toml` and `planning.toml` as tables in a browser, as a
-friendlier alternative to hand-editing TOML. It's local-network-trusted only
-— there's no authentication.
+friendlier alternative to hand-editing TOML, and for viewing the same
+report the CLI produces at `/reports`, without leaving the browser. It's
+local-network-trusted only — there's no authentication.
 
 Run it in dev mode from the repo root:
 
@@ -89,7 +90,9 @@ running the packaged container).
 From there you can list/add/edit/delete team members and projects, and
 add/remove assignments per project per month. Validation errors (e.g. an
 assignment referencing an unknown team member) are reported back instead of
-corrupting the files.
+corrupting the files. The "Reports" link (`/reports`) shows the same
+member-capacity and project-gap tables as the CLI's HTML export — handy
+after editing without switching to a terminal.
 
 ## Running tests
 
