@@ -78,7 +78,10 @@ Run it in dev mode from the repo root:
 mvn -pl web-editor quarkus:dev
 ```
 
-Then open http://localhost:8080 in a browser. It reads/writes the same
+Then open http://localhost:8080 in a browser. It listens on all interfaces
+(`quarkus.http.host=0.0.0.0`), so it's also reachable as
+`http://<server-ip>:8080` from elsewhere on the local network — there's no
+authentication, so only expose it on a network you trust. It reads/writes the same
 `data/` directory as the CLI (configurable via the
 `resourceplanning.data-dir` property, or `RESOURCEPLANNING_DATA_DIR` when
 running the packaged container).
