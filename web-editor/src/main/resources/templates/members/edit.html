@@ -1,0 +1,21 @@
+{#include base.html title="Edit team member"}
+<h2>Edit {member.id}</h2>
+<form method="post" action="/members/{member.id}">
+  <label>ID<input value="{member.id}" disabled></label>
+  <label>First name<input name="firstName" value="{member.firstName}" required></label>
+  <label>Last name<input name="lastName" value="{member.lastName}" required></label>
+  <label>Team<input name="team" value="{member.team}" required></label>
+  <label>Role<input name="role" value="{member.role}" required></label>
+  <label>Hours per day<input name="hoursDaily" type="number" step="0.5" value="{member.hoursDaily}" required></label>
+  <label>Pay schema
+    <select name="paySchema">
+      <option value="d3" {#if member.paySchema.name() == 'D3'}selected{/if}>d3</option>
+      <option value="d4" {#if member.paySchema.name() == 'D4'}selected{/if}>d4</option>
+      <option value="d5" {#if member.paySchema.name() == 'D5'}selected{/if}>d5</option>
+    </select>
+  </label>
+  <label>Skills (comma-separated)<input name="skills" value="{skillsText}"></label>
+  <button type="submit">Save</button>
+</form>
+<p><a href="/members">Back to list</a></p>
+{/include}

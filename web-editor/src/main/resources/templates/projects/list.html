@@ -1,0 +1,41 @@
+{#include base.html title="Projects"}
+<h2>Projects</h2>
+<table>
+<thead><tr>
+  <th>ID</th><th>Name</th><th>Start</th><th>End</th><th>Hours total</th><th>Skills needed</th><th>Responsible</th><th></th>
+</tr></thead>
+<tbody>
+{#for project in projects}
+<tr>
+  <td><a href="/projects/{project.id}">{project.id}</a></td>
+  <td>{project.name}</td>
+  <td>{project.startMonth}</td>
+  <td>{project.endMonth}</td>
+  <td>{project.hoursTotal}</td>
+  <td>{project.skillsNeeded}</td>
+  <td>{project.responsible}</td>
+  <td>
+    <a href="/projects/{project.id}/edit">Edit</a>
+    <form class="inline" method="post" action="/projects/{project.id}/delete">
+      <button type="submit">Delete</button>
+    </form>
+  </td>
+</tr>
+{/for}
+</tbody>
+</table>
+
+<fieldset>
+<legend>Add project</legend>
+<form method="post" action="/projects">
+  <label>ID (kebab-case)<input name="id" required></label>
+  <label>Name<input name="name" required></label>
+  <label>Start month (YYYY-MM)<input name="startMonth" placeholder="2026-01" required></label>
+  <label>End month (YYYY-MM)<input name="endMonth" placeholder="2026-06" required></label>
+  <label>Hours total<input name="hoursTotal" type="number" step="1" required></label>
+  <label>Skills needed (comma-separated)<input name="skillsNeeded" placeholder="java, typescript"></label>
+  <label>Responsible<input name="responsible" required></label>
+  <button type="submit">Add</button>
+</form>
+</fieldset>
+{/include}

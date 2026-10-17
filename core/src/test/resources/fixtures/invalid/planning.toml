@@ -1,0 +1,10 @@
+[[project]]
+id = "broken-project"
+name = "Broken Project"
+start_month = "2026-06"
+end_month = "2026-01"
+hours_total = 100
+skills_needed = ["java"]
+
+  [project.assignments]
+  "2026-06" = [ { member = "ghost.person", percentage = 50 } ]

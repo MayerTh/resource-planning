@@ -1,0 +1,9 @@
+[[member]]
+id = "anna.mayer"
+first_name = "Anna"
+last_name = "Mayer"
+team = "Platform"
+role = "Senior Software Engineer"
+hours_daily = 8
+pay_schema = "d4"
+skills = ["java", "kotlin", "sql"]

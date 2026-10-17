@@ -1,0 +1,14 @@
+{#include base.html title="Edit project"}
+<h2>Edit {project.id}</h2>
+<form method="post" action="/projects/{project.id}">
+  <label>ID<input value="{project.id}" disabled></label>
+  <label>Name<input name="name" value="{project.name}" required></label>
+  <label>Start month (YYYY-MM)<input name="startMonth" value="{project.startMonth}" required></label>
+  <label>End month (YYYY-MM)<input name="endMonth" value="{project.endMonth}" required></label>
+  <label>Hours total<input name="hoursTotal" type="number" step="1" value="{project.hoursTotal}" required></label>
+  <label>Skills needed (comma-separated)<input name="skillsNeeded" value="{skillsText}"></label>
+  <label>Responsible<input name="responsible" value="{project.responsible}" required></label>
+  <button type="submit">Save</button>
+</form>
+<p><a href="/projects">Back to list</a></p>
+{/include}

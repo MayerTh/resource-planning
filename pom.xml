@@ -3,32 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.resourceplanning</groupId>
+  <groupId>org.resourceplanning</groupId>
   <artifactId>resource-planning</artifactId>
   <version>0.1.0</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
-  <properties>
-    <maven.compiler.release>21</maven.compiler.release>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <exec.mainClass>com.resourceplanning.Main</exec.mainClass>
-  </properties>
-
-  <build>
-    <finalName>${project.artifactId}</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.1</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>${exec.mainClass}</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <modules>
+    <module>core</module>
+    <module>cli</module>
+    <module>web-editor</module>
+  </modules>
 </project>

@@ -1,0 +1,11 @@
+[[project]]
+id = "internal-tools-revamp"
+name = "Internal Tools Revamp"
+start_month = "2026-01"
+end_month = "2026-03"
+hours_total = 800
+skills_needed = ["java", "typescript"]
+responsible = "Markus Weber"
+
+  [project.assignments]
+  "2026-01" = [ { member = "anna.mayer", percentage = 25 } ]

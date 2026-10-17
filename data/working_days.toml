@@ -1,0 +1,189 @@
+# Static reference data: number of working days per month for Bavaria (Germany), 2026-2028.
+# Generated once from public holiday data; not meant to be hand-edited regularly.
+# "Working day" = Mon-Fri, excluding Bavarian statewide public holidays.
+# Note: Mariae Himmelfahrt (Aug 15) is legally a holiday only in municipalities
+# with a majority-Catholic population; it is treated here as non-working for the
+# whole state. It only affects the count in 2028 (falls on a Tuesday); in 2026/2027
+# it falls on a weekend anyway.
+# See docs/adr/0003-calendar-reference-file.md and docs/adr/0005-working-days-counts-only.md.
+
+[[working_days]]
+year = 2026
+month = 1
+count = 20
+
+[[working_days]]
+year = 2026
+month = 2
+count = 20
+
+[[working_days]]
+year = 2026
+month = 3
+count = 22
+
+[[working_days]]
+year = 2026
+month = 4
+count = 20
+
+[[working_days]]
+year = 2026
+month = 5
+count = 18
+
+[[working_days]]
+year = 2026
+month = 6
+count = 21
+
+[[working_days]]
+year = 2026
+month = 7
+count = 23
+
+[[working_days]]
+year = 2026
+month = 8
+count = 21
+
+[[working_days]]
+year = 2026
+month = 9
+count = 22
+
+[[working_days]]
+year = 2026
+month = 10
+count = 22
+
+[[working_days]]
+year = 2026
+month = 11
+count = 21
+
+[[working_days]]
+year = 2026
+month = 12
+count = 22
+
+[[working_days]]
+year = 2027
+month = 1
+count = 19
+
+[[working_days]]
+year = 2027
+month = 2
+count = 20
+
+[[working_days]]
+year = 2027
+month = 3
+count = 21
+
+[[working_days]]
+year = 2027
+month = 4
+count = 22
+
+[[working_days]]
+year = 2027
+month = 5
+count = 18
+
+[[working_days]]
+year = 2027
+month = 6
+count = 22
+
+[[working_days]]
+year = 2027
+month = 7
+count = 22
+
+[[working_days]]
+year = 2027
+month = 8
+count = 22
+
+[[working_days]]
+year = 2027
+month = 9
+count = 22
+
+[[working_days]]
+year = 2027
+month = 10
+count = 21
+
+[[working_days]]
+year = 2027
+month = 11
+count = 21
+
+[[working_days]]
+year = 2027
+month = 12
+count = 23
+
+[[working_days]]
+year = 2028
+month = 1
+count = 20
+
+[[working_days]]
+year = 2028
+month = 2
+count = 21
+
+[[working_days]]
+year = 2028
+month = 3
+count = 23
+
+[[working_days]]
+year = 2028
+month = 4
+count = 18
+
+[[working_days]]
+year = 2028
+month = 5
+count = 21
+
+[[working_days]]
+year = 2028
+month = 6
+count = 20
+
+[[working_days]]
+year = 2028
+month = 7
+count = 21
+
+[[working_days]]
+year = 2028
+month = 8
+count = 22
+
+[[working_days]]
+year = 2028
+month = 9
+count = 21
+
+[[working_days]]
+year = 2028
+month = 10
+count = 21
+
+[[working_days]]
+year = 2028
+month = 11
+count = 21
+
+[[working_days]]
+year = 2028
+month = 12
+count = 19
+

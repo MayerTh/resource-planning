@@ -1,0 +1,29 @@
+[[member]]
+id = "anna.mayer"
+first_name = "Anna"
+last_name = "Mayer"
+team = "Platform"
+role = "Senior Software Engineer"
+hours_daily = 8
+pay_schema = "d4"
+skills = ["java", "kotlin", "sql"]
+
+[[member]]
+id = "jonas.schmidt"
+first_name = "Jonas"
+last_name = "Schmidt"
+team = "Data"
+role = "Software Engineer"
+hours_daily = 8
+pay_schema = "d3"
+skills = ["python", "go"]
+
+[[member]]
+id = "lea.fischer"
+first_name = "Lea"
+last_name = "Fischer"
+team = "Data"
+role = "Tech Lead"
+hours_daily = 6
+pay_schema = "d5"
+skills = ["java", "typescript", "python"]

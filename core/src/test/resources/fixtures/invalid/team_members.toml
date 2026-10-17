@@ -1,0 +1,17 @@
+[[member]]
+id = "anna.mayer"
+first_name = "Anna"
+last_name = "Mayer"
+team = "Platform"
+pay_schema = "d9"
+skills = ["java"]
+
+[[member]]
+id = "anna.mayer"
+first_name = "Anna"
+last_name = "Duplicate"
+team = "Platform"
+role = "Engineer"
+hours_daily = 8
+pay_schema = "d4"
+skills = ["java"]

@@ -1,0 +1,46 @@
+{#include base.html title="Project: {project.id}"}
+<h2>{project.name} <small>({project.id})</small></h2>
+<p>
+  {project.startMonth} &ndash; {project.endMonth} &middot;
+  skills needed: {project.skillsNeeded} &middot;
+  responsible: {project.responsible}
+</p>
+<p><a href="/projects/{project.id}/edit">Edit project details</a> &middot; <a href="/projects">Back to list</a></p>
+
+<h3>Assignments</h3>
+<table>
+<thead><tr><th>Month</th><th>Member</th><th>Percentage</th><th></th></tr></thead>
+<tbody>
+{#for assignment in assignments}
+<tr>
+  <td>{assignment.month}</td>
+  <td>{assignment.member}</td>
+  <td>{assignment.percentage}</td>
+  <td>
+    <form class="inline" method="post" action="/projects/{project.id}/assignments/delete">
+      <input type="hidden" name="month" value="{assignment.month}">
+      <input type="hidden" name="member" value="{assignment.member}">
+      <button type="submit">Delete</button>
+    </form>
+  </td>
+</tr>
+{/for}
+</tbody>
+</table>
+
+<fieldset>
+<legend>Add assignment</legend>
+<form method="post" action="/projects/{project.id}/assignments">
+  <label>Month (YYYY-MM)<input name="month" placeholder="2026-01" required></label>
+  <label>Member
+    <select name="member">
+    {#for member in members}
+      <option value="{member.id}">{member.id}</option>
+    {/for}
+    </select>
+  </label>
+  <label>Percentage<input name="percentage" type="number" step="5" required></label>
+  <button type="submit">Add</button>
+</form>
+</fieldset>
+{/include}

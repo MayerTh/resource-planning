@@ -1,0 +1,48 @@
+{#include base.html title="Team members"}
+<h2>Team members</h2>
+<table>
+<thead><tr>
+  <th>ID</th><th>Name</th><th>Team</th><th>Role</th><th>Hours/day</th><th>Pay schema</th><th>Skills</th><th></th>
+</tr></thead>
+<tbody>
+{#for member in members}
+<tr>
+  <td>{member.id}</td>
+  <td>{member.firstName} {member.lastName}</td>
+  <td>{member.team}</td>
+  <td>{member.role}</td>
+  <td>{member.hoursDaily}</td>
+  <td>{member.paySchema}</td>
+  <td>{member.skills}</td>
+  <td>
+    <a href="/members/{member.id}/edit">Edit</a>
+    <form class="inline" method="post" action="/members/{member.id}/delete">
+      <button type="submit">Delete</button>
+    </form>
+  </td>
+</tr>
+{/for}
+</tbody>
+</table>
+
+<fieldset>
+<legend>Add team member</legend>
+<form method="post" action="/members">
+  <label>ID (e.g. anna.mayer)<input name="id" required></label>
+  <label>First name<input name="firstName" required></label>
+  <label>Last name<input name="lastName" required></label>
+  <label>Team<input name="team" required></label>
+  <label>Role<input name="role" required></label>
+  <label>Hours per day<input name="hoursDaily" type="number" step="0.5" required></label>
+  <label>Pay schema
+    <select name="paySchema">
+      <option value="d3">d3</option>
+      <option value="d4">d4</option>
+      <option value="d5">d5</option>
+    </select>
+  </label>
+  <label>Skills (comma-separated)<input name="skills" placeholder="java, kotlin, sql"></label>
+  <button type="submit">Add</button>
+</form>
+</fieldset>
+{/include}

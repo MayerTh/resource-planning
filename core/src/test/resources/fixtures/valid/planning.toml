@@ -1,0 +1,36 @@
+# Internal Tools Revamp: only partially staffed so far (only anna.mayer, only
+# Jan-Mar filled in) -> demonstrates an under-staffed project (missing the
+# typescript skill every month) and a team member (anna.mayer) with spare
+# capacity each month.
+[[project]]
+id = "internal-tools-revamp"
+name = "Internal Tools Revamp"
+start_month = "2026-01"
+end_month = "2026-03"
+hours_total = 800
+skills_needed = ["java", "typescript"]
+responsible = "Markus Weber"
+
+  [project.assignments]
+  "2026-01" = [ { member = "anna.mayer", percentage = 25 } ]
+  "2026-02" = [ { member = "anna.mayer", percentage = 25 } ]
+  "2026-03" = [ { member = "anna.mayer", percentage = 25 } ]
+
+# Data Platform Migration: jonas.schmidt's May assignment (120%) exceeds his
+# own capacity that month -> demonstrates over-allocation. Neither assignee
+# has the "sql" skill in March -> demonstrates a skill-coverage gap.
+[[project]]
+id = "data-platform-migration"
+name = "Data Platform Migration"
+start_month = "2026-03"
+end_month = "2026-05"
+hours_total = 1400
+skills_needed = ["python", "sql"]
+responsible = "Lea Fischer"
+
+  [project.assignments]
+  "2026-03" = [
+    { member = "lea.fischer", percentage = 60 },
+    { member = "jonas.schmidt", percentage = 40 },
+  ]
+  "2026-05" = [ { member = "jonas.schmidt", percentage = 120 } ]
