@@ -1,6 +1,6 @@
 # Resource Planning — Project Overview
 
-_Last updated: 2026-10-11_
+_Last updated: 2026-10-18_
 
 ## What this project is
 
@@ -12,7 +12,7 @@ Three hand-edited files act as the source of truth (format: TOML, see [ADR 0001]
 
 1. **`data/team_members.toml`** — `id` (stable, human-readable slug `firstname.lastname`, e.g. `anna.mayer`, see [ADR 0002](docs/adr/0002-slug-id-for-team-members.md)), `first_name`, `last_name`, `team` (string), `role` (string), `hours_daily`, `pay_schema` (enum: `d3`/`d4`/`d5`), `skills` (list of programming languages).
 2. **`data/planning.toml`** — projects and their monthly assignments, combined in one file (see [ADR 0006](docs/adr/0006-single-planning-file.md), [ADR 0007](docs/adr/0007-nested-assignments-per-project.md), [ADR 0008](docs/adr/0008-percentage-based-assignments.md)):
-   - `[[project]]`: `id` (kebab-case slug of the name), `name`, `start_month`/`end_month` (`"YYYY-MM"` strings, month granularity only), `hours_total` (total hour budget for the whole project — **reference value only**, not read by the gap computation, see [ADR 0010](docs/adr/0010-percentage-based-gap-reporting.md)), `skills_needed` (list), `responsible` (free-text name, not necessarily a team member).
+   - `[[project]]`: `id` (kebab-case slug of the name), `name`, `start_month`/`end_month` (`"YYYY-MM"` strings, month granularity only), `hours_total` (total hour budget for the whole project — reference-only for skill-matching, see [ADR 0010](docs/adr/0010-percentage-based-gap-reporting.md), but read by the headcount-gap computation as an evenly-spread-over-time approximation, see [ADR 0021](docs/adr/0021-headcount-gap-reporting.md)), `skills_needed` (list), `responsible` (free-text name, not necessarily a team member).
    - `project.assignments`: a sub-table nested under each project, keyed by month (`"YYYY-MM"`), each mapping to a list of `{ member, percentage }` entries — `percentage` is relative to that member's own capacity that month, not a flat FTE reference. No separate flat assignment list.
 3. **`data/working_days.toml`** — static, generated-once reference data: number of working days per month for Bavaria, Germany, 2026–2028 (count only, not full date lists — see [ADR 0005](docs/adr/0005-working-days-counts-only.md), superseding [ADR 0003](docs/adr/0003-calendar-reference-file.md)). Unlike the other two, this isn't meant to be hand-edited regularly.
 
@@ -25,6 +25,7 @@ Over-/under-allocation are reported in the tool's output only, never blocking; p
 - Plan/track which team members are allocated to which projects.
 - Keep data in human-editable files, git-trackable.
 - Visualize spare/unplanned capacity per team member and staffing gaps per project.
+- Surface headcount-level signals for the current month forward: company-wide hiring need and per-project short-staffing, plus a member-utilization view to catch idle team members (see [ADR 0021](docs/adr/0021-headcount-gap-reporting.md)).
 - Produce charts/tables from the CLI for an overview of allocations.
 - Offer a local web UI for editing `team_members.toml`/`planning.toml` as tables, as a friendlier alternative to hand-editing TOML (see [ADR 0016](docs/adr/0016-web-editor-second-interface.md)), and for viewing the same report there (see [ADR 0020](docs/adr/0020-web-editor-also-serves-reports.md)).
 - Leave room for a future auto-optimization planning mode, without changing file formats.
@@ -60,6 +61,7 @@ Significant architecture/design decisions live in [docs/adr](docs/adr) as indivi
 | [0018](docs/adr/0018-nix-devshell-only.md) | Nix flake scoped to dev-shell only; Docker is the packaging/distribution mechanism | accepted |
 | [0019](docs/adr/0019-toml-validation-approach.md) | TOML validation — structural + referential checks, collect-all-errors reporting | accepted |
 | [0020](docs/adr/0020-web-editor-also-serves-reports.md) | Web editor also serves the HTML report, reusing the CLI's renderer | accepted |
+| [0021](docs/adr/0021-headcount-gap-reporting.md) | Headcount-gap reporting reuses `hours_total`, reversing ADR 0010 for aggregate sizing only | accepted |
 
 ## Architecture
 
@@ -70,8 +72,8 @@ Significant architecture/design decisions live in [docs/adr](docs/adr) as indivi
 - **Entity model** (see [ADR 0015](docs/adr/0015-computation-shaped-entity-model.md), in `core`, package `org.resourceplanning.domain`): `TeamMember`, `Project`, `Assignment` (flattened out of the TOML's per-project nesting), `WorkingDaysCalendar`, bundled as `PlanningData`.
 - **Loader + validation** (`org.resourceplanning.io.TomlDataLoader`, using the `tomlj` library): parses the three TOML files into `PlanningData`, or throws `DataValidationException` with every error found in one pass — see [ADR 0019](docs/adr/0019-toml-validation-approach.md) for exactly what's checked.
 - **Writer** (`org.resourceplanning.io.TomlDataWriter`): the persistence counterpart used by `web-editor` — serializes `TeamMember`/`Project`/`Assignment` lists back to the same TOML layout (round-trips through `TomlDataLoader`, see `TomlDataWriterTest`).
-- **Computation layer** (`org.resourceplanning.compute.CapacityCalculator`, in `core`): produces `MemberMonthSummary` (assigned/spare %, over-allocation flag, per-project breakdown) and `ProjectMonthSummary` (covered/uncovered `skills_needed`) — these *are* the report rows, per ADR 0015; this is also the intended seam for a future optimizer.
-- **Renderers**: `org.resourceplanning.report.HtmlReportRenderer` (sortable HTML tables, vanilla JS, no build step) lives in `core`, shared by both `cli` and `web-editor` (ADR 0020); `org.resourceplanning.report.TerminalReportRenderer` (plain text) stays in `cli` only. Both just format the computation layer's output, no math. Kept flat/simple per [ADR 0014](docs/adr/0014-minimal-report-scope.md).
+- **Computation layer** (`org.resourceplanning.compute.CapacityCalculator`, in `core`): produces `MemberMonthSummary` (assigned/spare %, over-allocation flag, per-project breakdown) and `ProjectMonthSummary` (covered/uncovered `skills_needed`) — these *are* the report rows, per ADR 0015; this is also the intended seam for a future optimizer. Filtered overloads `memberMonthSummaries(YearMonth from)` / `projectMonthSummaries(YearMonth from)` restrict to the given month forward (the no-arg versions stay unfiltered). `overallHeadcountGaps(YearMonth from)` and `projectHeadcountGaps(YearMonth from)` produce `MonthlyHeadcountGap`/`ProjectHeadcountGap` rows — company-wide and per-project headcount sizing, see [ADR 0021](docs/adr/0021-headcount-gap-reporting.md).
+- **Renderers**: `org.resourceplanning.report.HtmlReportRenderer` (sortable HTML tables, vanilla JS, no build step) lives in `core`, shared by both `cli` and `web-editor` (ADR 0020); `org.resourceplanning.report.TerminalReportRenderer` (plain text) stays in `cli` only. Both just format the computation layer's output, no math. Kept flat/simple per [ADR 0014](docs/adr/0014-minimal-report-scope.md). `HtmlReportRenderer` additionally renders an inline-SVG bar chart for the overall headcount gap, a short-staffed-flagged table for per-project headcount gaps, and a CSS heatmap table for member utilization (ADR 0021); both `cli/Main.java` and `web-editor`'s `ReportsResource` call these with `YearMonth.now()` so reports only ever show the current month forward.
 - **`web-editor` pages** (`org.resourceplanning.webeditor`): `HomeResource`, `MembersResource`, `ProjectsResource` — list/add/edit/delete for team members and projects, plus per-project assignment add/delete, all via plain HTML forms over Qute templates (`src/main/resources/templates`); `ReportsResource` serves `/reports` by calling `CapacityCalculator` + `HtmlReportRenderer` directly, returning the same HTML document the CLI exports (ADR 0020). `PlanningRepository` resolves the data-file paths (`resourceplanning.data-dir` config property, default `../data`, overridable via `RESOURCEPLANNING_DATA_DIR` env var for containers) and wraps the loader/writer. `DataValidationExceptionMapper` turns a failed validation into a readable 400 response instead of a stack trace.
 - The domain model stays decoupled from file-based persistence so the storage layer could be swapped later without touching the rest of the code.
 - Favor **human-understandable naming** throughout (classes, fields) — readability over brevity/cleverness.

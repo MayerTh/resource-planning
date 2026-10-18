@@ -9,6 +9,8 @@ import org.resourceplanning.compute.CapacityCalculator;
 import org.resourceplanning.domain.PlanningData;
 import org.resourceplanning.report.HtmlReportRenderer;
 
+import java.time.YearMonth;
+
 @Path("/reports")
 public class ReportsResource {
 
@@ -20,6 +22,11 @@ public class ReportsResource {
     public String report() {
         PlanningData data = repository.load();
         CapacityCalculator calculator = new CapacityCalculator(data);
-        return HtmlReportRenderer.render(calculator.memberMonthSummaries(), calculator.projectMonthSummaries());
+        YearMonth currentMonth = YearMonth.now();
+        return HtmlReportRenderer.render(
+            calculator.memberMonthSummaries(currentMonth),
+            calculator.projectMonthSummaries(currentMonth),
+            calculator.overallHeadcountGaps(currentMonth),
+            calculator.projectHeadcountGaps(currentMonth));
     }
 }

@@ -10,6 +10,7 @@ import org.resourceplanning.report.TerminalReportRenderer;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.YearMonth;
 
 public class Main {
 
@@ -33,14 +34,18 @@ public class Main {
             return;
         }
 
+        YearMonth currentMonth = YearMonth.now();
         CapacityCalculator calculator = new CapacityCalculator(data);
-        var memberSummaries = calculator.memberMonthSummaries();
-        var projectSummaries = calculator.projectMonthSummaries();
+        var memberSummaries = calculator.memberMonthSummaries(currentMonth);
+        var projectSummaries = calculator.projectMonthSummaries(currentMonth);
+        var overallHeadcountGaps = calculator.overallHeadcountGaps(currentMonth);
+        var projectHeadcountGaps = calculator.projectHeadcountGaps(currentMonth);
 
         System.out.print(TerminalReportRenderer.render(memberSummaries, projectSummaries));
 
         try {
-            Files.writeString(htmlOutput, HtmlReportRenderer.render(memberSummaries, projectSummaries));
+            Files.writeString(htmlOutput,
+                HtmlReportRenderer.render(memberSummaries, projectSummaries, overallHeadcountGaps, projectHeadcountGaps));
             System.out.println("\nHTML report written to " + htmlOutput.toAbsolutePath());
         } catch (IOException e) {
             System.err.println("Could not write HTML report: " + e.getMessage());
