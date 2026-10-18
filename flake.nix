@@ -13,7 +13,7 @@
       in
       {
         devShells.default = pkgs.mkShell {
-          packages = [ pkgs.jdk pkgs.maven ];
+          packages = [ pkgs.jdk pkgs.maven pkgs.gh ];
         };
       });
 }
